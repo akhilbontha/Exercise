@@ -47,3 +47,22 @@ if response.status_code == 200:
         print("No new data available.")
 else:
     print("Failed to fetch data from the API:", response.status_code)
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+import requests
+
+# Create a SparkSession
+spark = SparkSession.builder \
+    .appName("Fetch Schema from API") \
+    .getOrCreate()
+
+# Load JSON data into PySpark DataFrame
+df = spark.read.option("multiline","true").option("inferschema", "true").json("response")
+
+# Falttening the Nested Json
+df1 = df.select("*",explode_outer("feeds").alias("new_feeds")).select("*",explode_outer("new_feeds.AirBox").alias("new_AirBox")).drop("new_feeds.AirBox").drop("feeds").drop("new_feeds")
+
+df1.select("device_id","num_of_records","source","version","new_AirBox.*").printSchema()
+df1.show(truncate=False)
