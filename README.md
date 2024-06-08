@@ -1,8 +1,8 @@
 This Project contains Pyspark exercise file
 
-exercise.py file contains pyspark code
+exercise.py file contains entire exercise pyspark code
 
-append-write.ipynb file contains Databricks notebook file
+append-write.ipynb file contains entire exercise Databricks notebook file
 
-Final flatten.ipynb file contains sample output
+Final flatten.ipynb file contains tested sample output
 
